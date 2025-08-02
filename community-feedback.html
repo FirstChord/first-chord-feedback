@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's On Your Mind - First Chord Music School</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Fix for form interaction and First Chord branding -->
+    <style>
+        /* First Chord Brand Colors */
+        :root {
+            --fc-primary: #6366F1;
+            --fc-success: #10B981;
+            --fc-warning: #F59E0B;
+            --fc-danger: #EF4444;
+            --fc-dark: #1A1A1A;
+            --fc-sky-blue: #C7E9F1;
+            --fc-mint: #98D8A8;
+            --fc-pink: #FFB6C1;
+        }
+        
+        /* Default state: Form elements on top for interaction */
+        .form-input,
+        .form-textarea,
+        .submit-button {
+            position: relative !important;
+            z-index: 9999 !important;
+            pointer-events: auto !important;
+            transition: z-index 0.1s ease;
+        }
+        
+        .form-group {
+            position: relative !important;
+            z-index: 9998 !important;
+        }
+        
+        .textarea-container {
+            position: relative !important;
+            z-index: 9998 !important;
+        }
+        
+        /* Ensure animations don't block interactions by default */
+        .pencil-animation,
+        .button-spinner,
+        .success-icon,
+        .header-icon {
+            z-index: 1 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Make sure labels are also clickable for better UX */
+        .form-label {
+            position: relative !important;
+            z-index: 9999 !important;
+            pointer-events: auto !important;
+        }
+        
+        /* Enhanced submit button with First Chord styling */
+        .submit-button {
+            background: linear-gradient(135deg, var(--fc-primary) 0%, #5558e3 100%) !important;
+            border: none !important;
+            border-radius: 12px !important;
+            color: white !important;
+            font-weight: 600 !important;
+            font-size: 16px !important;
+            padding: 16px 32px !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3) !important;
+        }
+        
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4) !important;
+            background: linear-gradient(135deg, #5558e3 0%, var(--fc-primary) 100%) !important;
+        }
+        
+        .submit-button:disabled {
+            background: #E5E7EB !important;
+            color: #9CA3AF !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+        
+        .submit-button.loading {
+            background: var(--fc-success) !important;
+            animation: fcPulseGreen 2s ease-in-out infinite !important;
+        }
+        
+        @keyframes fcPulseGreen {
+            0%, 100% { box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3) !important; }
+            50% { box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5) !important; }
+        }
+        
+        /* Subtle form input enhancements */
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: var(--fc-primary) !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+        }
+        
+        /* Rocket animation with First Chord colors */
+        .rocket-trail {
+            background: linear-gradient(to bottom, 
+                var(--fc-primary) 0%,
+                var(--fc-warning) 30%,
+                var(--fc-danger) 60%,
+                transparent 100%) !important;
+        }
+        
+        /* Paper modal gets highest priority when shown */
+        .paper-overlay.show {
+            z-index: 99999 !important;
+            position: fixed !important;
+        }
+        
+        .feedback-paper.show {
+            z-index: 100000 !important;
+            position: fixed !important;
+        }
+        
+        /* During submission: lower form elements so effects can appear on top */
+        body.submitting .form-input,
+        body.submitting .form-textarea,
+        body.submitting .submit-button,
+        body.submitting .form-label,
+        body.submitting .form-group,
+        body.submitting .textarea-container {
+            z-index: 1 !important;
+        }
+        
+        /* Rocket Launch Animation Styles */
+        .rocket-launch {
+            position: fixed;
+            z-index: 100000;
+            transition: all 0.3s ease;
+        }
+        
+        .rocket-launch.launching {
+            animation: rocketFlight 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        
+        .rocket-body {
+            font-size: 2rem;
+            animation: rocketSpin 0.5s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.6));
+        }
+        
+        .rocket-trail {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 120px;
+            background: linear-gradient(to bottom, 
+                rgba(255, 107, 53, 0.8) 0%,
+                rgba(255, 165, 0, 0.6) 50%,
+                transparent 100%);
+            border-radius: 50% 50% 0 0;
+            animation: rocketFlame 0.1s ease-in-out infinite alternate;
+        }
+        
+        .rocket-message {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 1.1rem;
+            color: #ff6b35;
+            font-weight: bold;
+            opacity: 0;
+            animation: messageAppear 2s ease-out 0.5s forwards;
+        }
+        
+        /* Rocket flight path */
+        @keyframes rocketFlight {
+            0% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            10% {
+                transform: translate(-50%, -65%) scale(1.05) rotate(-1deg);
+                opacity: 1;
+            }
+            25% {
+                transform: translate(-48%, -140%) scale(1.1) rotate(-3deg);
+                opacity: 1;
+            }
+            40% {
+                transform: translate(-45%, -240%) scale(1.0) rotate(-6deg);
+                opacity: 0.95;
+            }
+            55% {
+                transform: translate(-40%, -360%) scale(0.85) rotate(-9deg);
+                opacity: 0.9;
+            }
+            70% {
+                transform: translate(-30%, -500%) scale(0.65) rotate(-12deg);
+                opacity: 0.8;
+            }
+            80% {
+                transform: translate(-15%, -650%) scale(0.45) rotate(-15deg);
+                opacity: 0.6;
+            }
+            90% {
+                transform: translate(10%, -820%) scale(0.25) rotate(-18deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translate(30%, -1000%) scale(0.1) rotate(-20deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes rocketSpin {
+            0% { transform: rotate(-2deg); }
+            100% { transform: rotate(2deg); }
+        }
+        
+        @keyframes rocketFlame {
+            0% { 
+                height: 40px; 
+                opacity: 0.8; 
+            }
+            100% { 
+                height: 50px; 
+                opacity: 1; 
+            }
+        }
+        
+        @keyframes messageAppear {
+            0% { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(10px); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0); 
+            }
+        }
+        
+        /* Launch pad effects */
+        .rocket-launch-pad {
+            position: fixed;
+            z-index: 99999;
+        }
+        
+        .rocket-smoke {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ccc;
+            border-radius: 50%;
+            animation: smokeRise 2s ease-out forwards;
+        }
+        
+        @keyframes smokeRise {
+            0% {
+                opacity: 0.8;
+                transform: scale(0.5) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2) translateY(-100px);
+            }
+        }
+        
+        /* Success message styling for rocket theme */
+        .rocket-success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 100001;
+            opacity: 0;
+            animation: rocketMessageAppear 1s ease-out 2s forwards;
+            border: 2px solid #ff6b35;
+        }
+        
+        @keyframes rocketMessageAppear {
+            0% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) translateY(20px) scale(0.9); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) translateY(0) scale(1); 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-image">
+            <img src="https://live.staticflickr.com/65535/52772228045_de8eac47f2_k.jpg" 
+                 alt="First Chord Music School" 
+                 style="width: 100%; height: auto; display: block; border-radius: 0;">
+        </div>
+        <header class="header">
+            <h1 class="title">What's On Your Mind?</h1>
+        </header>
+
+        <main class="main">
+            <form class="feedback-form" id="feedbackForm" novalidate>
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        Your Name <span class="optional">(optional)</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="form-input"
+                        placeholder="Leave blank to stay anonymous"
+                        autocomplete="name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="feedback" class="form-label required">
+                        Your Feedback
+                    </label>
+                    <div class="textarea-container">
+                        <textarea 
+                            id="feedback" 
+                            name="feedback" 
+                            class="form-textarea"
+                            placeholder="Tell us about your experience, suggest events, share ideas for our community, or anything else you'd like us to know..."
+                            rows="6"
+                            required
+                            aria-describedby="feedback-error"
+                        ></textarea>
+                        
+                        <!-- Pencil Animation Container -->
+                        <div class="pencil-animation" id="pencilAnimation">
+                            <!-- Simple Animated Pencil -->
+                            <div class="animated-pencil">
+                                <div class="pencil-body"></div>
+                                <div class="pencil-tip"></div>
+                                <div class="pencil-eraser"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="character-count">
+                        <span id="charCount">0</span> characters
+                    </div>
+                    <div id="feedback-error" class="error-message" role="alert" aria-live="polite"></div>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    <span class="button-text">Send Feedback</span>
+                    <div class="button-spinner" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2">
+                                <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="1s" repeatCount="indefinite"/>
+                            </path>
+                        </svg>
+                    </div>
+                </button>
+            </form>
+
+            <div class="success-message" id="successMessage" role="alert" aria-live="polite">
+                <div class="success-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="var(--success-color)"/>
+                        <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <h3>Thank you for your feedback!</h3>
+                <p>Your voice helps us create a vibrant and supportive music community for everyone.</p>
+            </div>
+        </main>
+
+        <!-- Handwritten Paper Modal -->
+        <div class="paper-overlay" id="paperOverlay"></div>
+        <div class="feedback-paper" id="feedbackPaper">
+            <button class="paper-close" id="paperClose">&times;</button>
+            <div class="paper-content">
+                <div class="paper-lines"></div>
+                <div class="handwritten-text" id="handwrittenText"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p style="font-weight: 600; margin-bottom: 0.25rem;">First Chord Music School</p>
+            <p style="font-size: 0.875rem; opacity: 0.8; margin: 0;">Exploring Music Together</p>
+        </footer>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js?v=4"></script>
+</body>
+</html>

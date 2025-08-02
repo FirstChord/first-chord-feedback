@@ -1,0 +1,757 @@
+/* CSS Custom Properties for Easy Theming */
+:root {
+  --primary-color: #667eea;
+  --primary-dark: #5a6fd8;
+  --secondary-color: #764ba2;
+  --success-color: #48bb78;
+  --error-color: #f56565;
+  --warning-color: #ed8936;
+  
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+  --bg-input: #ffffff;
+  --border-color: #e2e8f0;
+  --border-focus: #667eea;
+  
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
+}
+
+/* Reset and Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* Container and Layout */
+.container {
+  max-width: 28rem;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  min-height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  text-align: center;
+}
+
+.header-image {
+  width: 100%;
+  margin: 0;
+  display: block;
+}
+
+.title {
+  font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 0;
+  margin-top: 0;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Main Content */
+.main {
+  flex: 1;
+  padding: 2rem 1.5rem;
+}
+
+/* Form Styles */
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.form-label.required::after {
+  content: '*';
+  color: var(--error-color);
+  font-weight: 600;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--bg-input);
+  transition: all var(--transition-fast);
+  resize: vertical;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.form-textarea {
+  min-height: 8rem;
+  line-height: 1.5;
+  font-family: inherit;
+}
+
+/* Character Count */
+.character-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: -0.25rem;
+}
+
+/* Error Messages */
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: none;
+  padding: 0.5rem 0.75rem;
+  background: rgba(245, 101, 101, 0.1);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--error-color);
+}
+
+.error-message.show {
+  display: block;
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Submit Button */
+.submit-button {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  min-height: 3.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submit-button.loading .button-text {
+  opacity: 0;
+}
+
+.submit-button.loading .button-spinner {
+  opacity: 1;
+}
+
+.button-spinner {
+  position: absolute;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+/* Success Message */
+.success-message {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+  background: rgba(72, 187, 120, 0.1);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(72, 187, 120, 0.2);
+}
+
+.success-message.show {
+  display: block;
+  animation: fadeInScale 0.5s ease-out;
+}
+
+.success-icon {
+  margin: 0 auto 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.success-message h3 {
+  color: var(--success-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.success-message p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Footer */
+.footer {
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.footer p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Validation States */
+.form-input.error,
+.form-textarea.error {
+  border-color: var(--error-color);
+  box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.1);
+}
+
+.form-input.success,
+.form-textarea.success {
+  border-color: var(--success-color);
+  box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 320px) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  .container {
+    min-height: calc(100vh - 1rem);
+  }
+  
+  .header {
+    padding: 1.5rem 1rem;
+  }
+  
+  .main {
+    padding: 1.5rem 1rem;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 480px) {
+  .container {
+    max-width: 32rem;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: 2rem;
+  }
+  
+  .container {
+    max-width: 36rem;
+    min-height: calc(100vh - 4rem);
+  }
+  
+  .header {
+    padding: 2.5rem 2rem;
+  }
+  
+  .main {
+    padding: 2.5rem 2rem;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+}
+
+/* Focus Management for Accessibility */
+.form-input:focus-visible,
+.form-textarea:focus-visible,
+.submit-button:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-color: #000000;
+    --text-muted: #000000;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Setup Message */
+.setup-message {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+  background: rgba(237, 137, 54, 0.1);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(237, 137, 54, 0.2);
+}
+
+.setup-message.show {
+  display: block;
+  animation: fadeInScale 0.5s ease-out;
+}
+
+.setup-icon {
+  margin: 0 auto 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.setup-message h3 {
+  color: var(--warning-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.setup-message p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.setup-message ol {
+  text-align: left;
+  max-width: 400px;
+  margin: 1rem auto;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.setup-message ol li {
+  margin-bottom: 0.5rem;
+}
+
+.setup-message code {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
+.setup-message a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.setup-message a:hover {
+  text-decoration: underline;
+}
+
+.retry-button {
+  background: var(--warning-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  margin-top: 1rem;
+}
+
+.retry-button:hover {
+  background: #d97626;
+  transform: translateY(-1px);
+}
+
+/* Pencil Animation Styles */
+.textarea-container {
+  position: relative;
+}
+
+/* Pencil Animation Container */
+.pencil-animation {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  margin: 15px 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Simple Animated Pencil */
+.animated-pencil {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%) rotate(-10deg);
+  width: 50px;
+  height: 8px;
+  transition: left 0.3s ease-out;
+}
+
+.pencil-body {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  width: 35px;
+  height: 8px;
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  border-radius: 4px;
+  border: 1px solid #d97706;
+}
+
+.pencil-tip {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 0;
+  height: 0;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-right: 10px solid #374151;
+}
+
+.pencil-eraser {
+  position: absolute;
+  right: 0;
+  top: 1px;
+  width: 6px;
+  height: 6px;
+  background: #ef4444;
+  border-radius: 3px;
+}
+
+/* Floating animation when not typing */
+.pencil-animation.floating .animated-pencil {
+  animation: pencilFloat 2s ease-in-out infinite;
+}
+
+@keyframes pencilFloat {
+  0%, 100% { 
+    transform: translateY(-50%) rotate(-10deg);
+  }
+  50% { 
+    transform: translateY(-50%) rotate(-10deg) translateY(-3px);
+  }
+}
+
+/* Paper with handwritten feedback */
+.feedback-paper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 90%;
+  max-width: 500px;
+  height: 600px;
+  background: #fefefe;
+  border-radius: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.feedback-paper.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.feedback-paper.folding {
+  transform: translate(-50%, -50%) scale(0.1) rotateX(90deg);
+  opacity: 0;
+}
+
+.paper-content {
+  padding: 40px;
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+}
+
+.paper-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    #e2e8f0 31px,
+    #e2e8f0 32px
+  );
+  pointer-events: none;
+}
+
+.handwritten-text {
+  font-family: 'Kalam', cursive;
+  font-size: 18px;
+  line-height: 32px;
+  color: #1e293b;
+  margin: 0;
+  padding-top: 20px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.paper-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #64748b;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.paper-close:hover {
+  background-color: #f1f5f9;
+}
+
+.paper-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.paper-overlay.show {
+  opacity: 1;
+}
+
+.pencil {
+  opacity: 1 !important; /* Force visibility */
+  background: yellow; /* Debug background */
+  border: 2px solid green; /* Debug border */
+  transform-origin: center center;
+  position: absolute;
+  width: 20px;
+  height: 4px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.writing-path {
+  fill: none;
+  stroke: #333;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+/* Show path for debugging */
+.writing-path.debug {
+  opacity: 0.3;
+  stroke: red;
+}
+
+/* Writing path animation */
+@keyframes drawPath {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.writing-path path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+.writing-path.animating path {
+  animation: drawPath 3s ease-in-out forwards;
+}
+
+/* Pencil floating animation when not writing */
+@keyframes pencilFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(1deg);
+  }
+}
+
+.pencil.floating {
+  animation: pencilFloat 2s ease-in-out infinite;
+}
+
+/* Pencil writing motion */
+.pencil.writing {
+  animation: none;
+}
+
+/* Enhanced form textarea to work with animation */
+.form-textarea {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.form-textarea:focus {
+  background: rgba(255, 255, 255, 0.98);
+}
+
+/* Responsive pencil animation */
+@media (max-width: 768px) {
+  .pencil-animation {
+    opacity: 0.7;
+  }
+  
+  .pencil {
+    transform: scale(0.8);
+  }
+}

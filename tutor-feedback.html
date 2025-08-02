@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Feedback - Music School</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3.09 8.26L12 22L20.91 8.26L12 2Z" fill="var(--primary-color)"/>
+                    <path d="M12 2V22" stroke="white" stroke-width="2"/>
+                    <path d="M12 8L8 12L12 16L16 12L12 8Z" fill="white"/>
+                </svg>
+            </div>
+            <h1 class="title">Tutor Feedback</h1>
+            <p class="subtitle">Help us improve our teaching and support for you</p>
+        </header>
+
+        <main class="main">
+            <form class="feedback-form" id="feedbackForm" novalidate>
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        Your Name <span class="optional">(optional)</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="form-input"
+                        placeholder="Leave blank to stay anonymous"
+                        autocomplete="name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="feedback" class="form-label required">
+                        Your Feedback
+                    </label>
+                    <div class="textarea-container">
+                        <textarea 
+                            id="feedback" 
+                            name="feedback" 
+                            class="form-textarea"
+                            placeholder="Share your thoughts about teaching, curriculum, facilities, or anything else that could help us improve..."
+                            rows="6"
+                            required
+                            aria-describedby="feedback-error"
+                        ></textarea>
+                        
+                        <!-- Pencil Animation Container -->
+                        <div class="pencil-animation" id="pencilAnimation">
+                            <!-- Simple Animated Pencil -->
+                            <div class="animated-pencil">
+                                <div class="pencil-body"></div>
+                                <div class="pencil-tip"></div>
+                                <div class="pencil-eraser"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="character-count">
+                        <span id="charCount">0</span> characters
+                    </div>
+                    <div id="feedback-error" class="error-message" role="alert" aria-live="polite"></div>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    <span class="button-text">Send Feedback</span>
+                    <div class="button-spinner" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2">
+                                <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="1s" repeatCount="indefinite"/>
+                            </path>
+                        </svg>
+                    </div>
+                </button>
+            </form>
+
+            <div class="success-message" id="successMessage" role="alert" aria-live="polite">
+                <div class="success-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" fill="var(--success-color)"/>
+                        <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <h3>Thank you for your feedback!</h3>
+                <p>Your input helps us provide better support and teaching for all our tutors.</p>
+            </div>
+        </main>
+
+        <!-- Handwritten Paper Modal -->
+        <div class="paper-overlay" id="paperOverlay"></div>
+        <div class="feedback-paper" id="feedbackPaper">
+            <button class="paper-close" id="paperClose">&times;</button>
+            <div class="paper-content">
+                <div class="paper-lines"></div>
+                <div class="handwritten-text" id="handwrittenText"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Your feedback is important to us and helps create a better learning environment for everyone.</p>
+        </footer>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

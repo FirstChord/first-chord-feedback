@@ -17,7 +17,7 @@ A beautiful, interactive feedback form designed for First Chord Music School fea
 ## 🎯 User Experience
 
 1. **Hero Image**: Immediate brand recognition with full-width school photo
-2. **Simple Question**: "What's On Your Mind?" in bold, friendly typography  
+2. **Simple Question**: "What's On Your Mind?" in bold, friendly typography
 3. **Clean Form**: Optional name field and spacious feedback textarea
 4. **Rocket Launch**: Submit button transforms into animated rocket
 5. **Mobile Haptics**: Phone vibration feedback on launch
@@ -44,7 +44,7 @@ A beautiful, interactive feedback form designed for First Chord Music School fea
 ```
 feedback-tool/
 ├── community-feedback.html    # Main feedback form
-├── styles.css                # Base styles and responsive design  
+├── styles.css                # Base styles and responsive design
 ├── script.js                 # Form logic and rocket animation
 ├── config.js                 # Backend configuration
 ├── .gitignore                # Git ignore patterns
@@ -54,7 +54,7 @@ feedback-tool/
 ## 🎨 Brand Integration
 
 - **Primary Color**: #6366F1 (Indigo)
-- **Warning Color**: #F59E0B (Amber) 
+- **Warning Color**: #F59E0B (Amber)
 - **Danger Color**: #EF4444 (Red)
 - **Success Color**: #10B981 (Emerald)
 - **Typography**: Poppins 800 weight for headers

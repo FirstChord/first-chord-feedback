@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback System - Test Integration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; margin-bottom: 1rem; }
+        .section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .info { background: #d1ecf1; border-color: #bee5eb; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+        }
+        button:hover { background: #0056b3; }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        label {
+            display: block;
+            margin: 0.5rem 0 0.25rem 0;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Feedback System Integration Test</h1>
+        
+        <div class="section info">
+            <h3>Setup Instructions</h3>
+            <ol>
+                <li>Deploy your Google Apps Script as a Web App</li>
+                <li>Copy the Web App URL</li>
+                <li>Paste it in the field below</li>
+                <li>Test the connection</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h3>Configuration</h3>
+            <label for="webAppUrl">Google Apps Script Web App URL:</label>
+            <input type="url" id="webAppUrl" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+            
+            <button onclick="testConnection()">Test Connection</button>
+            <button onclick="saveUrl()">Save URL</button>
+            <div id="connectionResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>Test Submission</h3>
+            <label for="testSource">Source:</label>
+            <select id="testSource">
+                <option value="Tutor">Tutor</option>
+                <option value="Community">Community</option>
+                <option value="Test">Test</option>
+            </select>
+            
+            <label for="testName">Name (optional):</label>
+            <input type="text" id="testName" placeholder="Leave blank for anonymous">
+            
+            <label for="testFeedback">Feedback:</label>
+            <textarea id="testFeedback" rows="4" placeholder="Enter test feedback here...">This is a test submission to verify the Google Sheets integration is working correctly. The system should categorize this as General/Other.</textarea>
+            
+            <button onclick="submitTestFeedback()">Submit Test Feedback</button>
+            <div id="submissionResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>Categorization Test</h3>
+            <label for="categoryTest">Test Message:</label>
+            <textarea id="categoryTest" rows="3" placeholder="Enter a message to test categorization...">I think the teaching methods could be improved and the lesson structure needs work.</textarea>
+            
+            <button onclick="testCategorization()">Test Categorization</button>
+            <div id="categoryResult" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>Quick Tests</h3>
+            <button onclick="runQuickTests()">Run All Quick Tests</button>
+            <div id="quickTestResults" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUrl = localStorage.getItem('webAppUrl');
+            if (savedUrl) {
+                document.getElementById('webAppUrl').value = savedUrl;
+            }
+        });
+
+        function saveUrl() {
+            const url = document.getElementById('webAppUrl').value;
+            localStorage.setItem('webAppUrl', url);
+            showResult('connectionResult', 'URL saved successfully!', 'success');
+        }
+
+        async function testConnection() {
+            const url = document.getElementById('webAppUrl').value;
+            if (!url) {
+                showResult('connectionResult', 'Please enter a Web App URL first.', 'error');
+                return;
+            }
+
+            try {
+                showResult('connectionResult', 'Testing connection...', 'info');
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status && data.status.includes('running')) {
+                    showResult('connectionResult', '✅ Connection successful!\n' + JSON.stringify(data, null, 2), 'success');
+                } else {
+                    showResult('connectionResult', '❌ Unexpected response:\n' + JSON.stringify(data, null, 2), 'error');
+                }
+            } catch (error) {
+                showResult('connectionResult', '❌ Connection failed:\n' + error.message, 'error');
+            }
+        }
+
+        async function submitTestFeedback() {
+            const url = document.getElementById('webAppUrl').value;
+            if (!url) {
+                showResult('submissionResult', 'Please enter and test the Web App URL first.', 'error');
+                return;
+            }
+
+            const formData = {
+                source: document.getElementById('testSource').value,
+                name: document.getElementById('testName').value,
+                feedback: document.getElementById('testFeedback').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Add categorization
+            formData.category = categorizeMessage(formData.feedback);
+
+            try {
+                showResult('submissionResult', 'Submitting test feedback...', 'info');
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResult('submissionResult', '✅ Submission successful!\nCategory: ' + formData.category + '\n' + JSON.stringify(result, null, 2), 'success');
+                } else {
+                    showResult('submissionResult', '❌ Submission failed:\n' + JSON.stringify(result, null, 2), 'error');
+                }
+            } catch (error) {
+                showResult('submissionResult', '❌ Submission error:\n' + error.message, 'error');
+            }
+        }
+
+        function testCategorization() {
+            const message = document.getElementById('categoryTest').value;
+            const category = categorizeMessage(message);
+            showResult('categoryResult', `Message: "${message}"\nCategory: ${category}`, 'info');
+        }
+
+        function categorizeMessage(message) {
+            const text = message.toLowerCase();
+            
+            const teachingKeywords = ['teaching', 'teacher', 'lesson', 'curriculum', 'method', 'technique', 'practice', 'theory', 'homework', 'assignment', 'instructor', 'tutor', 'pedagogy', 'learning', 'skill', 'progress', 'improvement', 'exercise'];
+            const facilitiesKeywords = ['room', 'building', 'space', 'equipment', 'piano', 'instrument', 'schedule', 'timing', 'booking', 'admin', 'office', 'staff', 'facilities', 'maintenance', 'clean', 'noise', 'temperature', 'parking'];
+            const communityKeywords = ['community', 'event', 'concert', 'recital', 'performance', 'social', 'group', 'ensemble', 'collaboration', 'network', 'friend', 'atmosphere', 'culture', 'vibe', 'welcoming', 'inclusive', 'diversity', 'student'];
+            const businessKeywords = ['business', 'partnership', 'collaborate', 'opportunity', 'revenue', 'marketing', 'promotion', 'expansion', 'growth', 'investment', 'commercial', 'profit', 'cost', 'price', 'fee', 'payment'];
+            
+            const scores = {
+                'Teaching/Curriculum': countKeywordMatches(text, teachingKeywords),
+                'Facilities/Operations': countKeywordMatches(text, facilitiesKeywords),
+                'Community/Events': countKeywordMatches(text, communityKeywords),
+                'Business/Collaboration': countKeywordMatches(text, businessKeywords)
+            };
+            
+            const maxScore = Math.max(...Object.values(scores));
+            if (maxScore === 0) return 'General/Other';
+            
+            for (const [category, score] of Object.entries(scores)) {
+                if (score === maxScore) return category;
+            }
+            return 'General/Other';
+        }
+
+        function countKeywordMatches(text, keywords) {
+            return keywords.reduce((count, keyword) => count + (text.includes(keyword) ? 1 : 0), 0);
+        }
+
+        async function runQuickTests() {
+            showResult('quickTestResults', 'Running quick tests...', 'info');
+            
+            const tests = [
+                { message: "The teaching method is great but needs improvement", expected: "Teaching/Curriculum" },
+                { message: "The piano in room 3 needs tuning", expected: "Facilities/Operations" },
+                { message: "We should have more community events", expected: "Community/Events" },
+                { message: "Consider partnering with local businesses", expected: "Business/Collaboration" },
+                { message: "Just wanted to say thanks!", expected: "General/Other" }
+            ];
+
+            let results = "Categorization Test Results:\n\n";
+            tests.forEach((test, i) => {
+                const result = categorizeMessage(test.message);
+                const status = result === test.expected ? "✅" : "❌";
+                results += `${i + 1}. ${status} "${test.message}"\n   Expected: ${test.expected}, Got: ${result}\n\n`;
+            });
+
+            showResult('quickTestResults', results, 'info');
+        }
+
+        function showResult(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `result ${type}`;
+            element.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

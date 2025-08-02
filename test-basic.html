@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Textarea Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .test-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        
+        .test-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .log {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Basic Textarea Test</h1>
+    <p>This is a minimal test to check if textarea events work:</p>
+    
+    <form id="testForm">
+        <div>
+            <label for="testFeedback">Test Feedback:</label>
+            <textarea 
+                id="testFeedback" 
+                name="testFeedback" 
+                class="test-textarea"
+                placeholder="Type here to test events..."
+                rows="6"
+            ></textarea>
+        </div>
+        <button type="submit" style="margin-top: 10px; padding: 10px 20px;">Submit Test</button>
+    </form>
+    
+    <div class="log" id="eventLog">
+        <strong>Event Log:</strong><br>
+    </div>
+
+    <script>
+        console.log('Basic test script loaded');
+        
+        function log(message) {
+            const logDiv = document.getElementById('eventLog');
+            const time = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${time}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            log('DOM loaded');
+            
+            const textarea = document.getElementById('testFeedback');
+            const form = document.getElementById('testForm');
+            
+            if (!textarea) {
+                log('ERROR: Textarea not found!');
+                return;
+            }
+            
+            log('Textarea found, adding event listeners...');
+            
+            textarea.addEventListener('click', () => {
+                log('✅ CLICK event fired');
+            });
+            
+            textarea.addEventListener('focus', () => {
+                log('✅ FOCUS event fired');
+            });
+            
+            textarea.addEventListener('blur', () => {
+                log('✅ BLUR event fired');
+            });
+            
+            textarea.addEventListener('input', () => {
+                log(`✅ INPUT event fired - text length: ${textarea.value.length}`);
+            });
+            
+            textarea.addEventListener('keydown', (e) => {
+                log(`✅ KEYDOWN event fired - key: ${e.key}`);
+            });
+            
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                log(`✅ SUBMIT event fired - text: "${textarea.value}"`);
+            });
+            
+            log('All event listeners added successfully');
+        });
+    </script>
+</body>
+</html>

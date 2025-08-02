@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textarea CSS Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* CSS Override to ensure textarea is clickable */
+        .form-textarea {
+            position: relative !important;
+            z-index: 9999 !important;
+            pointer-events: auto !important;
+            background: #fff !important;
+            border: 2px solid red !important; /* Make it obvious */
+        }
+        
+        .textarea-container {
+            position: relative !important;
+            z-index: 9998 !important;
+        }
+        
+        .pencil-animation {
+            z-index: 1 !important;
+            pointer-events: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CSS Override Test</h1>
+        <p>The textarea should have a red border and definitely be clickable:</p>
+        
+        <div class="form-group">
+            <label for="feedback">Test Feedback:</label>
+            <div class="textarea-container">
+                <textarea 
+                    id="feedback" 
+                    name="feedback" 
+                    class="form-textarea"
+                    placeholder="Click me and type to test..."
+                    rows="6"
+                ></textarea>
+                
+                <div class="pencil-animation" id="pencilAnimation">
+                    <div class="animated-pencil">
+                        <div class="pencil-body"></div>
+                        <div class="pencil-tip"></div>
+                        <div class="pencil-eraser"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="log"></div>
+    </div>
+
+    <script>
+        console.log('CSS Test loaded!');
+        
+        const textarea = document.getElementById('feedback');
+        const log = document.getElementById('log');
+        
+        function addLog(message) {
+            log.innerHTML += `<div>${message}</div>`;
+            console.log(message);
+        }
+        
+        if (textarea) {
+            addLog('✅ Textarea found');
+            
+            textarea.addEventListener('click', () => {
+                addLog('🎯 CLICK worked!');
+            });
+            
+            textarea.addEventListener('focus', () => {
+                addLog('🎯 FOCUS worked!');
+            });
+            
+            textarea.addEventListener('input', () => {
+                addLog('🎯 INPUT worked!');
+            });
+            
+            addLog('🎉 Event listeners added');
+        } else {
+            addLog('❌ Textarea not found');
+        }
+    </script>
+</body>
+</html>

@@ -567,10 +567,10 @@ class FeedbackForm {
     messageDiv.className = 'rocket-success-message';
     messageDiv.innerHTML = `
       <div style="font-size: 1.4em; color: #ff6b35; margin-bottom: 1rem;">
-        � Feedback Launched Successfully!
+        🚀 Your Feedback Has Been Launched To Our CEO (Finn's dog Vince)!
       </div>
       <p style="color: #666; font-style: italic;">
-        Your message is soaring to new heights and will help our community reach the stars!
+        Vince will delicately pass it on to us with his very tiny paws. Thank you so much for taking the time and we use all feedback to make First Chord the best community it can be!
       </p>
     `;
     

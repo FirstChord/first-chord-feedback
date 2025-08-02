@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
     
     <!-- CSS Fix for form interaction and First Chord branding -->
     <style>
@@ -134,21 +132,60 @@
             z-index: 1 !important;
         }
         
-        /* Rocket Launch Animation Styles */
+        /* Rocket Launch Animation Styles - GPU accelerated */
         .rocket-launch {
             position: fixed;
             z-index: 100000;
             transition: all 0.3s ease;
+            will-change: transform, opacity;
         }
         
         .rocket-launch.launching {
-            animation: rocketFlight 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: rocketFlight 2.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
         }
         
         .rocket-body {
             font-size: 2rem;
-            animation: rocketSpin 0.5s ease-in-out infinite alternate;
-            filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.6));
+            animation: rocketSpin 2s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 15px rgba(255, 107, 53, 0.5));
+        }
+        
+        /* Musical note particles - optimized for mobile */
+        .music-note {
+            position: absolute;
+            font-size: 1.2rem;
+            z-index: 99999;
+            pointer-events: none;
+            animation: noteFloat 2.5s ease-out forwards;
+            will-change: transform, opacity;
+        }
+        
+        .note-1 { color: var(--fc-primary); animation-delay: 0.3s; }
+        .note-2 { color: var(--fc-warning); animation-delay: 0.6s; }
+        .note-3 { color: var(--fc-danger); animation-delay: 0.9s; }
+        .note-4 { color: var(--fc-success); animation-delay: 1.2s; }
+        
+        @keyframes noteFloat {
+            0% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+            }
+            25% {
+                opacity: 1;
+                transform: translate3d(-15px, -40px, 0) rotate(10deg) scale(1.1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: translate3d(20px, -100px, 0) rotate(-8deg) scale(0.9);
+            }
+            75% {
+                opacity: 0.4;
+                transform: translate3d(-25px, -160px, 0) rotate(12deg) scale(1.1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(15px, -220px, 0) rotate(-6deg) scale(0.6);
+            }
         }
         
         .rocket-trail {
@@ -163,7 +200,7 @@
                 rgba(255, 165, 0, 0.6) 50%,
                 transparent 100%);
             border-radius: 50% 50% 0 0;
-            animation: rocketFlame 0.1s ease-in-out infinite alternate;
+            animation: rocketFlame 0.2s ease-in-out infinite alternate;
         }
         
         .rocket-message {
@@ -179,49 +216,69 @@
             animation: messageAppear 2s ease-out 0.5s forwards;
         }
         
-        /* Rocket flight path */
+        /* Rocket flight path - ultra smooth with more keyframes */
         @keyframes rocketFlight {
             0% {
-                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                transform: translate3d(-50%, -50%, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            5% {
+                transform: translate3d(-50%, -55%, 0) scale(1.02) rotate(-0.5deg);
                 opacity: 1;
             }
             10% {
-                transform: translate(-50%, -65%) scale(1.05) rotate(-1deg);
+                transform: translate3d(-50%, -65%, 0) scale(1.05) rotate(-1deg);
                 opacity: 1;
             }
-            25% {
-                transform: translate(-48%, -140%) scale(1.1) rotate(-3deg);
+            20% {
+                transform: translate3d(-49%, -95%, 0) scale(1.08) rotate(-2deg);
+                opacity: 1;
+            }
+            30% {
+                transform: translate3d(-48%, -140%, 0) scale(1.1) rotate(-3deg);
                 opacity: 1;
             }
             40% {
-                transform: translate(-45%, -240%) scale(1.0) rotate(-6deg);
+                transform: translate3d(-46%, -200%, 0) scale(1.05) rotate(-5deg);
+                opacity: 0.98;
+            }
+            50% {
+                transform: translate3d(-43%, -270%, 0) scale(0.95) rotate(-7deg);
                 opacity: 0.95;
             }
-            55% {
-                transform: translate(-40%, -360%) scale(0.85) rotate(-9deg);
+            60% {
+                transform: translate3d(-38%, -350%, 0) scale(0.8) rotate(-9deg);
                 opacity: 0.9;
             }
             70% {
-                transform: translate(-30%, -500%) scale(0.65) rotate(-12deg);
+                transform: translate3d(-30%, -440%, 0) scale(0.65) rotate(-11deg);
                 opacity: 0.8;
             }
             80% {
-                transform: translate(-15%, -650%) scale(0.45) rotate(-15deg);
-                opacity: 0.6;
+                transform: translate3d(-18%, -540%, 0) scale(0.5) rotate(-14deg);
+                opacity: 0.65;
+            }
+            85% {
+                transform: translate3d(-10%, -600%, 0) scale(0.4) rotate(-16deg);
+                opacity: 0.5;
             }
             90% {
-                transform: translate(10%, -820%) scale(0.25) rotate(-18deg);
-                opacity: 0.3;
+                transform: translate3d(0%, -670%, 0) scale(0.3) rotate(-17deg);
+                opacity: 0.35;
+            }
+            95% {
+                transform: translate3d(15%, -750%, 0) scale(0.2) rotate(-19deg);
+                opacity: 0.2;
             }
             100% {
-                transform: translate(30%, -1000%) scale(0.1) rotate(-20deg);
+                transform: translate3d(25%, -820%, 0) scale(0.1) rotate(-20deg);
                 opacity: 0;
             }
         }
         
         @keyframes rocketSpin {
-            0% { transform: rotate(-2deg); }
-            100% { transform: rotate(2deg); }
+            0% { transform: rotate(-1deg); }
+            100% { transform: rotate(1deg); }
         }
         
         @keyframes rocketFlame {
@@ -285,7 +342,7 @@
             text-align: center;
             z-index: 100001;
             opacity: 0;
-            animation: rocketMessageAppear 1s ease-out 2s forwards;
+            animation: rocketMessageAppear 1s ease-out 0.5s forwards;
             border: 2px solid #ff6b35;
         }
         
@@ -380,8 +437,8 @@
                         <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none"/>
                     </svg>
                 </div>
-                <h3>Thank you for your feedback!</h3>
-                <p>Your voice helps us create a vibrant and supportive music community for everyone.</p>
+                <h3>Your Feedback Has Been Launched To Our CEO (Finn's dog Vince)!</h3>
+                <p>Vince will delicately pass it on to us with his very tiny paws. Thank you so much for taking the time and we use all feedback to make First Chord the best community it can be!</p>
             </div>
         </main>
 

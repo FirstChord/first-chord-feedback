@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Test</title>
+</head>
+<body>
+    <h1>JavaScript Test</h1>
+    <p id="test">If you see this, JS is NOT working</p>
+    <textarea id="testArea" placeholder="Type here to test"></textarea>
+    <div id="log"></div>
+
+    <script>
+        console.log('Script loaded!');
+        document.getElementById('test').textContent = 'JavaScript is working!';
+        
+        const textarea = document.getElementById('testArea');
+        const log = document.getElementById('log');
+        
+        textarea.addEventListener('input', () => {
+            log.innerHTML += 'Input event fired!<br>';
+            console.log('Input event fired!');
+        });
+        
+        textarea.addEventListener('focus', () => {
+            log.innerHTML += 'Focus event fired!<br>';
+            console.log('Focus event fired!');
+        });
+    </script>
+</body>
+</html>
